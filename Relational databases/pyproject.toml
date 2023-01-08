@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "home-work-6"
+version = "0.1.0"
+description = ""
+authors = ["Serhii Kravchenko <skravchenko20@gmail.com>"]
+readme = "README.md"
+packages = [{include = "home_work_6"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+faker = "^15.3.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
