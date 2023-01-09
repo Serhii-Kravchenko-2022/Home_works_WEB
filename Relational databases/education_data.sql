@@ -2,7 +2,11 @@
 DROP TABLE IF EXISTS student;
 CREATE TABLE student (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(50) NOT NULL
+    name VARCHAR(50) NOT NULL,
+    class_name_id INTEGER,
+    FOREIGN KEY (class_name_id) REFERENCES class (id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
 );
 
 -- Table: class

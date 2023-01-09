@@ -40,13 +40,13 @@ def generate_fake_data(number_students, number_class, number_subject, number_tea
         fake_teachers.append(fake_data.name())
 
     # make class name from CLASS_LIST in quantity number_class
-    while len(fake_class_names) < NUMBER_CLASS:
+    while len(fake_class_names) < number_class:
         name = choice(CLASS_LIST)
         if name not in fake_class_names:
             fake_class_names.append(name)
 
-    # make class name from CLASS_LIST in quantity number_class
-    while len(fake_subjects) < NUMBER_SUBJECT:
+    # make subject name from SUBJECT_LIST in quantity number_class
+    while len(fake_subjects) < number_subject:
         name = choice(SUBJECT_LIST)
         if name not in fake_subjects:
             fake_subjects.append(name)
@@ -62,18 +62,18 @@ def prepare_data(students, class_names, subjects, teachers, grades) -> tuple:
     """
     prepare data for fill db tables
 
-    :param students:
-    :param class_names:
-    :param subjects:
-    :param teachers:
-    :param grades:
+    :param students: list
+    :param class_names: list
+    :param subjects: list
+    :param teachers: list
+    :param grades: list
     :return: tuple of lists tuple
     """
 
     for_students = []
     # prepare list of tuple for students table
-    for student in students:
-        for_students.append((student, ))
+    for stud in students:
+        for_students.append((stud, randint(1, NUMBER_CLASS)))
 
     for_class_names = []
     # prepare list of tuple for class_name table
@@ -82,30 +82,39 @@ def prepare_data(students, class_names, subjects, teachers, grades) -> tuple:
 
     for_subject = []
     # prepare list of tuple for subjects table
-    for subject in subjects:
-        for_subject.append((subject, randint(1, NUMBER_TEACHER)))
+    for subj in subjects:
+        for_subject.append((subj, randint(1, NUMBER_TEACHER)))
 
     for_teachers = []
     # prepare list of tuple for teachers table
-    for teacher in teachers:
-        for_teachers.append((teacher,))
+    for teach in teachers:
+        for_teachers.append((teach,))
 
     for_grades = []
     # prepare list of tuple for grades table
-    for student in range(1, NUMBER_STUDENTS + 1):
-        for subject in range(1, NUMBER_SUBJECT + 1):
+    for stud in range(1, NUMBER_STUDENTS + 1):
+        for grad in range(1, len(grades) + 1):
             grade_date = datetime(2022, randint(1, 5), randint(10, 20)).date()
-            for_grades.append((student, subject, choice(grades), grade_date))
+            for_grades.append((stud, randint(1, len(subjects)), choice(grades), grade_date))
 
     return for_students, for_class_names, for_subject, for_teachers, for_grades
 
 
 def insert_data_to_db(students, class_names, subjects, teachers, grades) -> None:
+    """
+    insert data to db
+    :param students: tuple
+    :param class_names: tuple
+    :param subjects: tuple
+    :param teachers: tuple
+    :param grades: tuple
+    :return: None
+    """
     with sqlite3.connect('education.db') as connect:
         cursor = connect.cursor()
 
-        sql_to_students = """INSERT INTO student(name)
-                                 VALUES (?)"""
+        sql_to_students = """INSERT INTO student(name, class_name_id)
+                                 VALUES (?, ?)"""
         cursor.executemany(sql_to_students, students)
 
         sql_to_class_names = """INSERT INTO class(title)

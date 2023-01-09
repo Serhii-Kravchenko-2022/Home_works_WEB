@@ -1,12 +1,11 @@
 -- Знайти 5 студентів із найбільшим середнім балом з усіх предметів.
 
--- select student_id from grade
-  --                where (
-SELECT student_id, max(AVG(value)) as avg_grade
-FROM grade
-group by subject_id
---    )
-
+SELECT s.name as student, round(avg(g.value), 2) AS avg_grade
+FROM grade g
+LEFT JOIN student s ON s.id = g.student_id
+GROUP BY s.id
+ORDER BY (round(avg(g.value), 2)) DESC
+LIMIT 5;
 
 
 
