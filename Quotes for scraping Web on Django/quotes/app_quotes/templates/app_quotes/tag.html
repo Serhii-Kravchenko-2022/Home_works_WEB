@@ -1,0 +1,31 @@
+{% extends 'app_quotes/base.html'%}
+{% load extract_tags %}
+{% block content%}
+<h1>Viewing tag: {{ tag }} </h1>
+
+{% for item in quotes %}
+<div class="card" style="width: 50rem;">
+    <div class="border border-primary rounded">
+        <div class="card-body">
+            <h5 class="card-title">{{item.author}}</h5>
+            <h5 class="card-title">Tags:</h5>
+            {% for tag in item.tags|tags %}
+<!--            <button href="{% url 'app_quotes:tag' tag %}" type="button" class="btn btn-primary"> {{ tag }}-->
+<!--            </button>-->
+            <a href="{% url 'app_quotes:tag' tag %}" class="btn btn-success">{{ tag }}</a>
+            <!--                <small> {{ tag }} </small>-->
+            {% endfor %}
+            <!--            <p>Tags: <small> {{ item.tags|tags }} </small></p>-->
+            <!--            <h6 class="card-subtitle mb-2 text-muted">Tags: {{item.tags}}</h6>-->
+            <h5 class="card-title">Quote:</h5>
+            <p class="card-text">{{item.quote}}</p>
+            <a href="{% url 'app_quotes:author' item.author %}" class="card-link">About author</a>
+        </div>
+    </div>
+</div>
+<br/>
+<br/>
+{% endfor %}
+
+
+{% endblock %}
