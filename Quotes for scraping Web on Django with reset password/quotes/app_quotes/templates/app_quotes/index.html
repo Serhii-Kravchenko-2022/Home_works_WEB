@@ -1,0 +1,89 @@
+{% extends 'app_quotes/base.html'%}
+{% load extract_tags %}
+{% block content%}
+
+<h1> Quotes for scrapping </h1>
+<div class="container">
+    <div class="row align-items-start">
+        <div class="col">
+            {% if items.has_previous%}
+            <a href="{% url 'app_quotes:main' %}?page={{items.previous_page_number}}"> Previous Page    </a>
+            {% endif %}
+
+            {% if items.has_next%}
+            <a href="{% url 'app_quotes:main' %}?page={{items.next_page_number}}"> Next Page</a>
+            {% endif %}
+
+
+            {% for item in items %}
+            <div class="card" style="width: 50rem;">
+                <div class="border border-primary rounded">
+                    <div class="card-body">
+                        <h5 class="card-title">Author:
+                            {{item.author}}
+                            <!--                            <a href="{% url 'app_quotes:author' item.author %}" class="card-link">{{item.author}}</a>-->
+                        </h5>
+                        <h5 class="card-title">Tags:</h5>
+                        {% for tag in item.tags|tags %}
+                        <!--            <button href="{% url 'app_quotes:tag' tag %}" type="button" class="btn btn-primary"> {{ tag }}-->
+                        <!--            </button>-->
+                        <a href="{% url 'app_quotes:tag' tag %}" class="btn btn-success">{{ tag }}</a>
+                        <!--                <small> {{ tag }} </small>-->
+                        {% endfor %}
+                        <!--            <p>Tags: <small> {{ item.tags|tags }} </small></p>-->
+                        <!--            <h6 class="card-subtitle mb-2 text-muted">Tags: {{item.tags}}</h6>-->
+                        <br>
+                        <br>
+                        <h5 class="card-title">Quote:</h5>
+                        <p class="card-text">
+                        <h5>{{item.quote}}</h5>
+                        </p>
+                        <a href="{% url 'app_quotes:author' item.author %}" class="card-link">About author</a>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            {% endfor %}
+
+            {% if items.has_previous%}
+            <a href="{% url 'app_quotes:main' %}?page={{items.previous_page_number}}"> Previous Page    </a>
+            {% endif %}
+
+            {% if items.has_next%}
+            <a href="{% url 'app_quotes:main' %}?page={{items.next_page_number}}"> Next Page</a>
+            {% endif %}
+        </div>
+        <div class="col">
+            <div class="container text-left">
+                <div class="row align-items-start">
+                    <div class="col">
+
+                    </div>
+                    <div class="col">
+
+                    </div>
+                    <div class="col">
+                        <h3>Top tags:</h3>
+                        <ol class="list-group list-group-numbered">
+                            {% for tag in top %}
+                            <li class="list-group-item">
+                                <div class="ms-2 me-auto">
+                                    <a href="{% url 'app_quotes:tag' tag %}" class="btn btn-success">{{ tag }}</a>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ol>
+                        <!--                        {% for tag in top %}-->
+                        <!--                        <a href="{% url 'app_quotes:tag' tag %}" class="btn btn-success w-40">{{ tag }}</a>-->
+                        <br>
+                        <!--                        {% endfor %}-->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
